@@ -1,0 +1,288 @@
+/* =========================================================================
+   style.css  —  Estética retro pixel-art con paleta "Midnight Bloom"
+   Botones con relieve (bisel) inspirados en la imagen de referencia:
+   rectangulares, bordes gruesos, luz arriba-izquierda, sombra abajo-derecha,
+   efecto hover y de pulsación (hundido).
+   ========================================================================= */
+
+:root {
+  --midnight: #011638;
+  --violet:   #2E294E;
+  --purple:   #9055A2;
+  --mauve:    #D499B9;
+  --blush:    #E8C1C5;
+  --font: 'Press Start 2P', 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--midnight);
+  color: var(--blush);
+  font-family: var(--font);
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+/* Escenario: centra el lienzo y mantiene la proporción 16:9 */
+#stage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 0%, #241a3a 0%, var(--midnight) 70%);
+}
+
+/* Líneas de barrido sutiles (efecto CRT retro) */
+#stage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.10) 0px,
+    rgba(0, 0, 0, 0.10) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: 0.35;
+}
+
+#game {
+  display: block;
+  width: min(100vw, 177.78vh);   /* 16:9 */
+  height: min(56.25vw, 100vh);
+  max-width: 1280px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  background: var(--midnight);
+  border: 4px solid var(--violet);
+  box-shadow: 0 0 0 4px var(--midnight), 0 8px 40px rgba(0,0,0,0.6);
+  touch-action: none;
+}
+
+/* ---------- Overlays de estado ---------- */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(1, 22, 56, 0.82);
+  backdrop-filter: blur(2px);
+  z-index: 20;
+  padding: 16px;
+}
+.overlay.hidden { display: none; }
+
+.panel {
+  text-align: center;
+  padding: 28px 34px;
+  background: linear-gradient(180deg, var(--violet), var(--midnight));
+  border: 4px solid var(--purple);
+  box-shadow: 0 6px 0 var(--midnight), 0 0 30px rgba(144, 85, 162, 0.5);
+  border-radius: 4px;
+  max-width: 92vw;
+  max-height: 92vh;
+  overflow-y: auto;
+}
+.panel-wide { width: 620px; }
+
+.title {
+  font-size: clamp(24px, 5vw, 52px);
+  line-height: 1.15;
+  color: var(--blush);
+  text-shadow: 3px 3px 0 var(--purple), 6px 6px 0 var(--midnight);
+  margin-bottom: 14px;
+  letter-spacing: 2px;
+}
+.title-sm {
+  font-size: clamp(16px, 3.2vw, 26px);
+  color: var(--blush);
+  text-shadow: 2px 2px 0 var(--purple);
+  margin-bottom: 18px;
+}
+.subtitle { font-size: clamp(8px, 1.4vw, 11px); color: var(--mauve); margin-bottom: 24px; }
+.hint-text { margin-top: 20px; font-size: clamp(7px, 1.1vw, 9px); line-height: 1.9; color: var(--mauve); }
+.score-line { font-size: clamp(9px, 1.6vw, 13px); color: var(--blush); margin: 8px 0; }
+.score-line span { color: var(--mauve); }
+
+/* ---------- Botones retro con relieve (bisel) ---------- */
+.btn {
+  display: block;
+  width: 100%;
+  min-width: 200px;
+  margin: 12px auto;
+  padding: 14px 22px;
+  font-family: var(--font);
+  font-size: clamp(10px, 1.8vw, 14px);
+  color: var(--midnight);
+  background: linear-gradient(180deg, var(--blush), var(--mauve));
+  border: 3px solid var(--midnight);
+  border-radius: 3px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  /* Bisel: luz interior arriba-izq, sombra interior abajo-der, base inferior */
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.55),
+    inset -3px -3px 0 rgba(144, 85, 162, 0.65),
+    0 5px 0 var(--purple),
+    0 6px 6px rgba(0, 0, 0, 0.4);
+  transition: transform 0.05s, box-shadow 0.05s, filter 0.1s;
+}
+.btn:hover  { filter: brightness(1.08); }
+.btn:active {
+  transform: translateY(4px);
+  box-shadow:
+    inset 3px 3px 0 rgba(144, 85, 162, 0.65),
+    inset -2px -2px 0 rgba(255, 255, 255, 0.4),
+    0 1px 0 var(--purple);
+}
+.btn-lg { font-size: clamp(14px, 2.6vw, 20px); padding: 18px; }
+.btn-ghost {
+  background: linear-gradient(180deg, var(--purple), var(--violet));
+  color: var(--blush);
+  box-shadow:
+    inset 2px 2px 0 rgba(232, 193, 197, 0.35),
+    inset -3px -3px 0 rgba(1, 22, 56, 0.6),
+    0 5px 0 var(--midnight);
+}
+.btn.off { background: linear-gradient(180deg, var(--violet), var(--midnight)); color: var(--mauve); }
+
+/* ---------- Fila de botones-icono (estilo panel de control retro) ---------- */
+.icon-row { display: flex; gap: 12px; justify-content: center; margin-bottom: 18px; flex-wrap: wrap; }
+.icon-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 76px;
+  padding: 12px 6px;
+  font-family: var(--font);
+  color: var(--midnight);
+  background: linear-gradient(180deg, var(--blush), var(--mauve));
+  border: 3px solid var(--midnight);
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.55),
+    inset -3px -3px 0 rgba(144, 85, 162, 0.65),
+    0 5px 0 var(--purple);
+}
+.icon-btn .ic { font-size: 22px; line-height: 1; }
+.icon-btn .lb { font-size: 8px; letter-spacing: 1px; }
+.icon-btn:active {
+  transform: translateY(4px);
+  box-shadow: inset 3px 3px 0 rgba(144, 85, 162, 0.65), 0 1px 0 var(--purple);
+}
+
+/* ---------- Selección de nivel ---------- */
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.level-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 14px 16px;
+  font-family: var(--font);
+  text-align: left;
+  color: var(--midnight);
+  background: linear-gradient(180deg, var(--blush), var(--mauve));
+  border: 3px solid var(--midnight);
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.5),
+    inset -3px -3px 0 rgba(144, 85, 162, 0.6),
+    0 5px 0 var(--purple);
+  transition: transform 0.05s, filter 0.1s;
+}
+.level-card:hover { filter: brightness(1.08); }
+.level-card:active { transform: translateY(4px); box-shadow: inset 3px 3px 0 rgba(144,85,162,0.6), 0 1px 0 var(--purple); }
+.level-card .level-num  { font-size: 20px; color: var(--violet); }
+.level-card .level-name { font-size: 9px; line-height: 1.4; }
+.level-card .level-tag  { font-size: 8px; color: var(--purple); letter-spacing: 1px; }
+.level-card.locked {
+  background: linear-gradient(180deg, var(--violet), var(--midnight));
+  color: var(--mauve);
+  cursor: not-allowed;
+  filter: none;
+  box-shadow: inset 2px 2px 0 rgba(144,85,162,0.25), 0 5px 0 var(--midnight);
+  opacity: 0.75;
+}
+.level-card.locked .level-num  { color: var(--purple); }
+.level-card.locked .level-tag  { color: var(--mauve); }
+
+.settings-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+
+/* ---------- Botón de pausa flotante ---------- */
+.hud-btn {
+  position: absolute;
+  top: calc(50% - 27vh);
+  right: calc(50% - 44vh);
+  z-index: 15;
+  display: none;                 /* visible solo jugando (ver .state-playing) */
+  width: 44px; height: 44px;
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--midnight);
+  background: linear-gradient(180deg, var(--blush), var(--mauve));
+  border: 3px solid var(--midnight);
+  border-radius: 3px;
+  box-shadow: inset 2px 2px 0 rgba(255,255,255,0.5), 0 4px 0 var(--purple);
+  cursor: pointer;
+}
+.hud-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--purple); }
+body.state-playing .hud-btn { display: block; }
+
+/* ---------- Controles táctiles ---------- */
+#touch-controls {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;   /* solo los botones capturan toques */
+  z-index: 12;
+  display: none;          /* visibles solo jugando */
+}
+body.state-playing #touch-controls { display: block; }
+
+.tc-cluster { position: absolute; bottom: 5vh; display: flex; gap: 14px; }
+.tc-left-cluster  { left: 4vw; }
+.tc-right-cluster { right: 4vw; }
+
+.tc-btn {
+  pointer-events: auto;
+  width: 62px; height: 62px;
+  font-size: 22px;
+  color: var(--midnight);
+  background: linear-gradient(180deg, var(--blush), var(--mauve));
+  border: 3px solid var(--midnight);
+  border-radius: 8px;
+  box-shadow: inset 2px 2px 0 rgba(255,255,255,0.5), 0 5px 0 var(--purple);
+  opacity: 0.92;
+  cursor: pointer;
+}
+.tc-btn.active { transform: translateY(4px); box-shadow: 0 1px 0 var(--purple); filter: brightness(1.15); }
+.tc-shoot { background: linear-gradient(180deg, var(--mauve), var(--purple)); color: var(--blush); }
+.tc-jump  { width: 72px; height: 72px; }
+
+/* En pantallas con ratón fino ocultamos los táctiles aunque se esté jugando */
+@media (hover: hover) and (pointer: fine) {
+  body.state-playing #touch-controls { display: none; }
+}
+
+/* Una sola columna de niveles en pantallas muy estrechas */
+@media (max-width: 480px) {
+  .level-grid { grid-template-columns: 1fr; }
+  .panel-wide { width: auto; }
+}

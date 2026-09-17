@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Midnight Bloom — Fase 2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="stage">
+    <!-- Lienzo del juego (resolución interna fija, escalada por CSS) -->
+    <canvas id="game" width="960" height="540"></canvas>
+
+    <!-- Botón de pausa flotante del HUD (visible solo jugando) -->
+    <button id="btn-hud-pause" class="hud-btn" title="Pausa (Esc)">II</button>
+
+    <!-- ==================== OVERLAYS DE ESTADO ==================== -->
+
+    <!-- MENÚ PRINCIPAL -->
+    <div id="overlay-menu" class="overlay">
+      <div class="panel">
+        <h1 class="title">MIDNIGHT<br>BLOOM</h1>
+        <p class="subtitle">Plataformas · Shooter · Arcade retro</p>
+        <button id="btn-start"    class="btn btn-lg">START</button>
+        <button id="btn-continue" class="btn">CONTINUE</button>
+        <button id="btn-settings" class="btn btn-ghost">SETTINGS</button>
+        <p class="hint-text">
+          A/D o ←→ mover &nbsp;·&nbsp; W/Espacio saltar<br>
+          J o clic disparar &nbsp;·&nbsp; Esc pausa &nbsp;·&nbsp; R reiniciar
+        </p>
+      </div>
+    </div>
+
+    <!-- SELECCIÓN DE NIVEL -->
+    <div id="overlay-levelselect" class="overlay hidden">
+      <div class="panel panel-wide">
+        <h2 class="title-sm">SELECCIÓN DE NIVEL</h2>
+        <div id="level-grid" class="level-grid"><!-- botones generados por ui.js --></div>
+        <button id="btn-ls-back" class="btn btn-ghost">BACK</button>
+      </div>
+    </div>
+
+    <!-- AJUSTES -->
+    <div id="overlay-settings" class="overlay hidden">
+      <div class="panel">
+        <h2 class="title-sm">SETTINGS</h2>
+        <div class="settings-list">
+          <button id="btn-toggle-sound" class="btn">SONIDO: ON</button>
+          <button id="btn-reset" class="btn btn-ghost">BORRAR PROGRESO</button>
+        </div>
+        <p class="score-line">MEJOR PUNTUACIÓN: <span id="st-best">0</span></p>
+        <button id="btn-settings-ok" class="btn">OK</button>
+      </div>
+    </div>
+
+    <!-- PAUSA -->
+    <div id="overlay-pause" class="overlay hidden">
+      <div class="panel">
+        <h2 class="title-sm">PAUSE</h2>
+        <div class="icon-row">
+          <button id="btn-resume"          class="icon-btn"><span class="ic">▶</span><span class="lb">CONT.</span></button>
+          <button id="btn-pause-restart"   class="icon-btn"><span class="ic">↺</span><span class="lb">RESET</span></button>
+          <button id="btn-pause-settings"  class="icon-btn"><span class="ic">⚙</span><span class="lb">AJUS.</span></button>
+          <button id="btn-pause-exit"      class="icon-btn"><span class="ic">⌂</span><span class="lb">SALIR</span></button>
+        </div>
+        <button id="btn-resume-2" class="btn">CONTINUE</button>
+      </div>
+    </div>
+
+    <!-- DERROTA -->
+    <div id="overlay-gameover" class="overlay hidden">
+      <div class="panel">
+        <h2 class="title-sm">GAME OVER</h2>
+        <p class="score-line">PUNTOS: <span id="go-score">0</span></p>
+        <p class="score-line">MEJOR: <span id="go-best">0</span></p>
+        <button id="btn-go-restart" class="btn">RESTART</button>
+        <button id="btn-go-menu" class="btn btn-ghost">BACK</button>
+      </div>
+    </div>
+
+    <!-- NIVEL COMPLETADO -->
+    <div id="overlay-complete" class="overlay hidden">
+      <div class="panel">
+        <h2 class="title-sm">LEVEL CLEAR</h2>
+        <p class="score-line">PUNTOS: <span id="lc-score">0</span></p>
+        <button id="btn-lc-next" class="btn">NEXT</button>
+        <button id="btn-lc-menu" class="btn btn-ghost">BACK</button>
+      </div>
+    </div>
+
+    <!-- VICTORIA FINAL -->
+    <div id="overlay-victory" class="overlay hidden">
+      <div class="panel">
+        <h2 class="title-sm">VICTORY</h2>
+        <p class="score-line">PUNTOS: <span id="vc-score">0</span></p>
+        <p class="score-line">MEJOR: <span id="vc-best">0</span></p>
+        <button id="btn-vc-menu" class="btn">OK</button>
+      </div>
+    </div>
+
+    <!-- ==================== CONTROLES TÁCTILES ==================== -->
+    <div id="touch-controls">
+      <div class="tc-cluster tc-left-cluster">
+        <button id="tc-left"  class="tc-btn">◀</button>
+        <button id="tc-right" class="tc-btn">▶</button>
+      </div>
+      <div class="tc-cluster tc-right-cluster">
+        <button id="tc-shoot" class="tc-btn tc-shoot">●</button>
+        <button id="tc-jump"  class="tc-btn tc-jump">▲</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Orden de carga: primero constantes, luego módulos, main al final -->
+  <script src="js/config.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/input.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/enemies.js"></script>
+  <script src="js/levels.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
